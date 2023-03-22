@@ -46,9 +46,9 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: backend/src/.
+          context: redmine_telegram_bot/.
           push: true
-          tags: mikhailkas/foodgram_backend:latest
+          tags: mikhailkas/redmine_telegram_bot:latest
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
@@ -61,7 +61,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         script: |
-          cd prakt-back-mmk
+          cd redmine_telegram_bot
           sudo docker-compose stop
           sudo docker-compose rm backend
           sudo docker-compose rm frontend
