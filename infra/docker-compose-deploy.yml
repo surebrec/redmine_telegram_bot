@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
   db:
@@ -13,9 +13,8 @@ services:
     container_name: redis
 
   server:
-    build:
-      context: ../redmine_telegram_bot/.
-      dockerfile: Dockerfile
+    image: mikhailkas/redmine_telegram_bot:latest
+    build: .
     entrypoint: ./server-entrypoint.sh
     restart: always
     volumes:
@@ -28,9 +27,8 @@ services:
       - redis
 
   celery:
-    build:
-      context: ../redmine_telegram_bot/.
-      dockerfile: Dockerfile
+    image: mikhailkas/redmine_telegram_bot:latest
+    build: .
     entrypoint: ./worker-entrypoint.sh
     restart: always
     volumes:
@@ -42,9 +40,8 @@ services:
       - redis
 
   celery-beat:
-    build:
-      context: ../redmine_telegram_bot/.
-      dockerfile: Dockerfile
+    image: mikhailkas/redmine_telegram_bot:latest
+    build: .
     entrypoint: ./beat-entrypoint.sh
     restart: always
     volumes:
