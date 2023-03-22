@@ -6,3 +6,4 @@ RUN pip3 install -r /app/requirements.txt --no-cache-dir
 COPY . ./
 RUN chmod +x ./server-entrypoint.sh
 RUN chmod +x ./worker-entrypoint.sh
+RUN chmod +x ./beat-entrypoint.sh

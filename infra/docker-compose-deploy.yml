@@ -26,41 +26,6 @@ services:
       - db
       - redis
 
-  celery:
-    image: mikhailkas/redmine_telegram_bot:latest
-    build: .
-    entrypoint: ./worker-entrypoint.sh
-    restart: always
-    volumes:
-      - .:/app/celery
-    env_file:
-      - ./.env
-    depends_on:
-      - server
-      - redis
-
-  celery-beat:
-    image: mikhailkas/redmine_telegram_bot:latest
-    build: .
-    entrypoint: ./beat-entrypoint.sh
-    restart: always
-    volumes:
-      - .:/app/celery_beat
-    env_file:
-      - ./.env
-    depends_on:
-      - celery
-      - server
-      - redis
-
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-
   nginx:
     image: nginx:1.19.3
     ports:
@@ -74,10 +39,44 @@ services:
       - media_value:/usr/share/nginx/html/server/media/
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     depends_on:
-      - server
       - redis
+      - server
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  celery:
+    image: mikhailkas/redmine_telegram_bot:latest
+    build: .
+    entrypoint: ./worker-entrypoint.sh
+    restart: always
+    volumes:
+      - .:/app/celery
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - server
+
+
+  celery-beat:
+    image: mikhailkas/redmine_telegram_bot:latest
+    build: .
+    entrypoint: ./beat-entrypoint.sh
+    restart: always
+    volumes:
+      - .:/app/celery_beat
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - server
       - celery
-      - celery-beat
 
 volumes:
   postgres_db:
