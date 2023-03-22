@@ -79,4 +79,4 @@ jobs:
             echo REDIS_URL=${{ secrets.REDIS_URL }} >>  .env
             echo TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} >>  .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >>  .env
-            sudo docker-compose up -f docker-compose-deploy.yml -d --build
+            sudo docker-compose up -f docker-compose-deploy.yml -d
