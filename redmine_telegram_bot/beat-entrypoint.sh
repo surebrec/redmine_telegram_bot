@@ -4,4 +4,4 @@ until cd /app/; do
   echo "Waiting for server volume..."
 done
 
-sudo celery -A redmine_telegram_bot beat --loglevel=INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+celery -A redmine_telegram_bot beat --loglevel=INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
