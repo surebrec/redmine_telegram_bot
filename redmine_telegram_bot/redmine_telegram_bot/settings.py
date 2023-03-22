@@ -23,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-+@65i((-5+fy@&1!2d!9qp+s!$ic+^)g@hr63x5e_-j!9%m)jr')
+SECRET_KEY = os.getenv('SECRET_KEY',
+                       'django-insecure-+@65i((-5+fy@&1!2d!9qp+s!$ic+^)g@hr63x5e_-j!9%m)jr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -145,3 +146,10 @@ CELERY_ACCEPT_CONTENT = ['application/json', 'application/pdf']
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_DEFAULT_QUEUE = 'default'
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', 'invalid_token')
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = ['https://redminebot.ddns.net',
+                        'https://127.0.0.1',
+                        'https://server']
