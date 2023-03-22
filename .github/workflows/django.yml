@@ -68,12 +68,13 @@ jobs:
           sudo docker pull mikhailkas/foodgram_backend
           sudo docker pull mikhailkas/foodgram_frontend
           touch .env
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >>  .env
           echo DB_ENGINE=${{ secrets.DB_ENGINE }} >>  .env
           echo DB_NAME=${{ secrets.DB_NAME }} >>  .env
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >>  .env
           echo DB_HOST=${{ secrets.DB_HOST }} >>  .env
           echo DB_PORT=${{ secrets.DB_PORT }} >>  .env
-          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >>  .env
-          echo CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }} >>  .env
+          echo REDIS_URL=${{ secrets.REDIS_URL }} >>  .env
+          echo TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} >>  .env
           sudo docker-compose up -d
