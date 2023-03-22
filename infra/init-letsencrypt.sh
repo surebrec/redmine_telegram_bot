@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(redminebot.org www.redminebot.org)
+domains=(redminebot.ddns.net)
 rsa_key_size=4096
 data_path="./data/certbot"
 email="m.m.kasatkin@yandex.ru" # Adding a valid address is strongly recommended
