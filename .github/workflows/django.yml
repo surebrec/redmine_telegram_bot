@@ -66,7 +66,7 @@ jobs:
             cd redmine_telegram_bot
             sudo docker-compose -f docker-compose-deploy.yml stop
             sudo docker-compose -f docker-compose-deploy.yml rm server
-            sudo docker pull mikhailkas/redmine_telegram_bot:latest
+            sudo docker pull mikhailkas/redmine_telegram_bot
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >>  .env
             echo DB_NAME=${{ secrets.DB_NAME }} >>  .env
