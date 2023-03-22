@@ -64,8 +64,8 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd redmine_telegram_bot
-            sudo docker-compose stop
-            sudo docker-compose rm server
+            sudo docker-compose -f docker-compose-deploy.yml stop
+            sudo docker-compose -f docker-compose-deploy.yml rm server
             sudo docker pull mikhailkas/redmine_telegram_bot:latest
             touch .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >>  .env
