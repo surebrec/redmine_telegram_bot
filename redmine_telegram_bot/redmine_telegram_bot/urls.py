@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from redmine import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', csrf_exempt(admin.site.urls)),
     path('bot_webhook/',
          csrf_exempt(views.TelegramBotWebhookView.as_view()))
 ]
