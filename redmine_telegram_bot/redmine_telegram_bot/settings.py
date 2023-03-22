@@ -144,3 +144,4 @@ CELERY_ACCEPT_CONTENT = ['application/json', 'application/pdf']
 # CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_DEFAULT_QUEUE = 'default'
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', 'invalid_token')
