@@ -10,7 +10,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       matrix:
         python-version: [3.7, 3.8, 3.9]
 
@@ -77,4 +76,4 @@ jobs:
             echo REDIS_URL=${{ secrets.REDIS_URL }} >>  .env
             echo TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} >>  .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >>  .env
-            sudo docker-compose -f docker-compose-deploy.yml up -d
+            sudo docker-compose -f docker-compose-deploy.yml up -d --build
