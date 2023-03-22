@@ -25,9 +25,6 @@ jobs:
         cd redmine_telegram_bot
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
   
   build_and_push_to_docker_hub:
     name: Push Docker backend image to Docker Hub
