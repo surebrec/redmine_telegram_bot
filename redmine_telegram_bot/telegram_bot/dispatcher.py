@@ -1,11 +1,12 @@
 from telegram.ext import Dispatcher, CommandHandler
-from .handlers.start_handler import command_start
+from .handlers.start_handler import command_start, command_stop
 from django.conf import settings
 from .main import telegram_bot
 
 
 def setup_dispatcher(dp: Dispatcher):
     dp.add_handler(CommandHandler('start', command_start))
+    dp.add_handler(CommandHandler('stop', command_stop))
     return dp
 
 
