@@ -40,8 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'django_celery_beat',
-    'telegram_bot',
+    'rest_framework',
+    'telegram_bot.apps.TelegramBotConfig',
+    'redmine.apps.RedmineConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -52,14 +56,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'redmine_telegram_bot.urls'
 
+TEMPLATES_DIR = BASE_DIR / 'templates'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,6 +95,16 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST', default='db'),
         'PORT': os.getenv('DB_PORT', default=5432),
     }
+    #
+    # "default": {
+    #     "ENGINE": os.environ.get("SQL_ENGINE",
+    #                              "django.db.backends.sqlite3"),
+    #     "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+    #     "USER": os.environ.get("SQL_USER", "user"),
+    #     "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+    #     "HOST": os.environ.get("SQL_HOST", "localhost"),
+    #     "PORT": os.environ.get("SQL_PORT", "5432"),
+    # }
 }
 
 # Password validation
@@ -111,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -145,7 +162,7 @@ CELERY_ACCEPT_CONTENT = ['application/json', 'application/pdf']
 # CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_DEFAULT_QUEUE = 'default'
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', '5739932170:AAGziElMEA6uBbYFqN0bP1iA4-OYp1CGJBg')
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -153,3 +170,26 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ['https://redminebot.ddns.net',
                         'https://127.0.0.1',
                         'https://server']
+
+# -----> REDMINE
+REDMINE_URL = os.getenv('REDMINE_URL', 'invalid_url')
+REDMINE_TOKEN = os.getenv('REDMINE_TOKEN', 'invalid_token')
+REDMINE_ENDPOINTS = {
+    'time_entries': '{url}/time_entries.{format}',
+    'groups': '{url}/groups/{group_id}.{format}'
+}
+
+if DEBUG:
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
+        "127.0.0.1", "10.0.2.2"]
+
+
+def show_toolbar(request):
+    return True
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+}
