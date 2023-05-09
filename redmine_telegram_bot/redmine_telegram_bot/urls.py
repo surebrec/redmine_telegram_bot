@@ -14,12 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
-from redmine import views
+from telegram_bot import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bot_webhook/',
-         csrf_exempt(views.TelegramBotWebhookView.as_view()))
+         csrf_exempt(views.TelegramBotWebhookView.as_view())),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
+
+admin.site.site_header = 'WorkTime Bot'
+admin.site.site_title = 'WorkTime Bot'
+admin.site.index_title = 'Администрирование бота'
