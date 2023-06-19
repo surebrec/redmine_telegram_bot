@@ -10,8 +10,15 @@ def setup_dispatcher(dp: Dispatcher):
     dp.add_handler(CommandHandler('stop', command_stop))
     dp.add_handler(CommandHandler('update', command_update,
                                   Filters.user(username='@Michael_Kasat')))
-    dp.add_handler(CommandHandler('time_entries', command_time_entries,
-                                  Filters.user(username='@Michael_Kasat')))
+    dp.add_handler(
+        CommandHandler('yesterday_time_entries',
+                       command_time_entries(1, 1),
+                       Filters.user(username='@Michael_Kasat')))
+
+    dp.add_handler(
+        CommandHandler('today_time_entries',
+                       command_time_entries(0, 0),
+                       Filters.user(username='@Michael_Kasat')))
 
     return dp
 

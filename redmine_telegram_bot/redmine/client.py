@@ -1,5 +1,7 @@
 import asyncio
+
 from aiohttp import ClientSession
+from aiohttp_client_cache import CachedSession, SQLiteBackend
 from django.conf import settings
 
 
@@ -32,12 +34,15 @@ class RedmineAPIClient(APIClient):
     def __init__(self):
         self.url = settings.REDMINE_URL
         self.token = settings.REDMINE_TOKEN
-        self.group_endpoint = settings.REDMINE_ENDPOINTS.get('groups')
-        self.time_entries_endpoint = settings.REDMINE_ENDPOINTS.get(
-            'time_entries')
+        self.groups_endpoint = settings.REDMINE_GROUPS_ENDPOINT
+        self.time_entries_endpoint = settings.REDMINE_TIME_ENTRIES_ENDPOINT
 
     def create_session(self):
-        client_session = ClientSession()
+        cache = SQLiteBackend(
+            cache_name=settings.CACHE_NAME,
+            expire_after=settings.CACHE_TIME,
+        )
+        client_session = CachedSession(cache=cache)
         client_session.headers.update({
             "X-Redmine-API-Key": settings.REDMINE_TOKEN
         })
@@ -45,9 +50,9 @@ class RedmineAPIClient(APIClient):
 
     def get_group_data(self, group_ids, **kwargs):
         urls = {
-            self.group_endpoint.format(url=self.url,
-                                       group_id=group_id,
-                                       format='json')
+            self.groups_endpoint.format(url=self.url,
+                                        group_id=group_id,
+                                        format='json')
             for group_id in group_ids}
         return asyncio.run(self.make_requests(urls=urls, **kwargs))
 

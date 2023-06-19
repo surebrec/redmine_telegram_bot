@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import json
 import os
 from pathlib import Path
 
@@ -158,8 +159,6 @@ BROKER_URL = REDIS_URL
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_ACCEPT_CONTENT = ['application/json', 'application/pdf']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_DEFAULT_QUEUE = 'default'
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -174,13 +173,13 @@ CSRF_TRUSTED_ORIGINS = ['https://redminebot.ddns.net',
 # -----> REDMINE
 REDMINE_URL = os.getenv('REDMINE_URL', 'invalid_url')
 REDMINE_TOKEN = os.getenv('REDMINE_TOKEN', 'invalid_token')
-REDMINE_ENDPOINTS = {
-    'time_entries': '{url}/time_entries.{format}',
-    'groups': '{url}/groups/{group_id}.{format}'
-}
-
+REDMINE_TIME_ENTRIES_ENDPOINT = os.getenv('REDMINE_TIME_ENTRIES_ENDPOINT',
+                                          'invalid_endpoint')
+REDMINE_GROUPS_ENDPOINT = os.getenv('REDMINE_GROUPS_ENDPOINT',
+                                    'invalid_endpoint')
 if DEBUG:
     import socket
+
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
         "127.0.0.1", "10.0.2.2"]
@@ -193,3 +192,6 @@ def show_toolbar(request):
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
 }
+
+CACHE_TIME = 60
+CACHE_NAME = '~/.cache/aiohttp-requests.db'

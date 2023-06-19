@@ -40,4 +40,7 @@ class RedmineUser(models.Model):
         ordering = ('id',)
 
     def __str__(self):
-        return '{} {:1.1}.{:1.1}.'.format(*self.name.split())
+        try:
+            return '{} {:1.1}.{:1.1}.'.format(*self.name.split())
+        except IndexError:
+            return self.name

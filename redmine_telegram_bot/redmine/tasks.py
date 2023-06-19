@@ -101,12 +101,11 @@ def get_time_entries(users, group_name, from_date, to_date):
     client = RedmineAPIClient()
     users_ids = '|'.join(map(str, [user['user_id'] for user in users]))
     users_names = [user['name'] for user in users]
-    data = client.get_time_entries_data(
+    time_entries_data = client.get_time_entries_data(
         params={'user_id': users_ids,
                 'from': from_date,
                 'to': to_date})
-
-    return render_to_message(data,
+    return render_to_message(time_entries_data,
                              users_names,
                              group_name,
                              from_date,
@@ -126,16 +125,17 @@ def send_time_entries(self, chat_id=None, from_delta=0, to_delta=0):
         groups = RedmineGroup.objects.filter(
             groups_chats__tasks__name=task_name).prefetch_related(
             'groups_chats').prefetch_related('users')
-    for group in groups:
-        users = list(group.users.all().values())
-        if chat_id:
-            chats_ids = [chat_id]
-        else:
-            chats = group.groups_chats.all().filter(
-                is_active=True,
-                tasks__name=task_name)
-            chats_ids = list(chats.values_list('chat_id', flat=True))
-        if chats_ids:
+    if groups:
+        for group in groups:
+            users = list(group.users.all().values())
+            if chat_id:
+                chats_ids = [chat_id]
+            else:
+                chats = group.groups_chats.all().filter(
+                    is_active=True,
+                    tasks__name=task_name)
+                chats_ids = list(chats.values_list('chat_id', flat=True))
             get_time_entries.apply_async(
                 (users, group.name, from_date, to_date),
-                link=send_messages.s(chats_ids))
+                link=send_messages.s(chats_ids)
+            )

@@ -1,3 +1,5 @@
+import logging
+
 from templates.redmine.message import message_template
 
 
