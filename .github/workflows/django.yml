@@ -58,10 +58,10 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd redmine_telegram_bot
-            sudo docker compose stop
-            sudo docker compose rm server
-            sudo docker compose rm celery
-            sudo docker compose rm celery-beat
+            sudo docker-compose stop
+            sudo docker-compose rm server
+            sudo docker-compose rm celery
+            sudo docker-compose rm celery-beat
             sudo docker pull mikhailkas/redmine_telegram_bot
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >>  .env
