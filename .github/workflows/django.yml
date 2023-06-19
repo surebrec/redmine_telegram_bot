@@ -72,5 +72,11 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >>  .env
             echo REDIS_URL=${{ secrets.REDIS_URL }} >>  .env
             echo TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} >>  .env
-            echo SECRET_KEY=${{ secrets.SECRET_KEY }} >>  .env
+            echo ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }} >>  .env
+            echo ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }} >>  .env
+            echo ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }} >>  .env
+            echo REDMINE_URL=${{ secrets.REDMINE_URL }} >>  .env
+            echo REDMINE_TOKEN=${{ secrets.REDMINE_TOKEN }} >>  .env
+            echo REDMINE_TIME_ENTRIES_ENDPOINT=${{ secrets.REDMINE_TIME_ENTRIES_ENDPOINT }} >>  .env
+            echo REDMINE_GROUPS_ENDPOINT=${{ secrets.REDMINE_GROUPS_ENDPOINT }} >>  .env
             sudo docker-compose up -d
