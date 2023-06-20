@@ -80,3 +80,4 @@ jobs:
             echo REDMINE_TIME_ENTRIES_ENDPOINT=${{ secrets.REDMINE_TIME_ENTRIES_ENDPOINT }} >>  .env
             echo REDMINE_GROUPS_ENDPOINT=${{ secrets.REDMINE_GROUPS_ENDPOINT }} >>  .env
             sudo docker-compose up -d
+            curl https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/setWebhook?url=${{ secrets.WEBHOOK_URL }}
