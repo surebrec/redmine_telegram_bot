@@ -23,7 +23,7 @@ def setup_dispatcher(dp: Dispatcher):
     return dp
 
 
-n_workers = 0 if settings.DEBUG else 4
+n_workers = 1 if settings.DEBUG else 4
 dispatcher = setup_dispatcher(
     Dispatcher(bot=telegram_bot,
                workers=n_workers,

@@ -14,6 +14,7 @@ django.setup()
 def command_start(update: Update, context: CallbackContext) -> None:
     chat, created = Chat.objects.get_or_create(
         chat_id=update.effective_chat.id)
+    print("I'm here")
     if created or not chat.is_active:
         chat.is_active = True
         chat.save()
