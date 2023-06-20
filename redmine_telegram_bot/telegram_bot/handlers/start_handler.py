@@ -21,7 +21,7 @@ def command_start(update: Update, context: CallbackContext) -> None:
     else:
         text = 'Бот уже работает'
 
-    update.message.reply_text(text=text)
+    update.effective_chat.send_message(text=text)
 
 
 def command_stop(update: Update, context: CallbackContext) -> None:
@@ -32,4 +32,4 @@ def command_stop(update: Update, context: CallbackContext) -> None:
         text = 'Бот остановлен...'
     except Chat.DoesNotExist:
         text = 'Бот уже остановлен('
-    update.message.reply_text(text=text)
+    update.effective_chat.send_message(text=text)
