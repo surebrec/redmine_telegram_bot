@@ -11,9 +11,11 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'redmine_telegram_bot.settings')
 django.setup()
 
+logger = logging.getLogger(__name__)
+
 
 def command_start(update: Update, context: CallbackContext) -> None:
-    logging.info('Start command activated')
+    logger.info('Start command activated')
     chat, created = Chat.objects.get_or_create(
         chat_id=update.effective_chat.id)
     if created or not chat.is_active:
@@ -27,7 +29,7 @@ def command_start(update: Update, context: CallbackContext) -> None:
 
 
 def command_stop(update: Update, context: CallbackContext) -> None:
-    logging.info('Stop command activated')
+    logger.info('Stop command activated')
     try:
         chat = Chat.objects.get(chat_id=update.effective_chat.id)
         chat.is_active = False

@@ -183,7 +183,6 @@ if DEBUG:
     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
         "127.0.0.1", "10.0.2.2"]
 
-
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
 }
@@ -191,7 +190,39 @@ DEBUG_TOOLBAR_CONFIG = {
 CACHE_TIME = 60
 CACHE_NAME = '~/.cache/aiohttp-requests.db'
 
-LOG_FORMAT = '"%(asctime)s - [%(levelname)s] - %(message)s"'
-LOG_DATE_FORMAT = '%d.%m.%Y %H:%M:%S'
-MAX_LOG_FILE_BYTES = 10 ** 6
-MAX_LOG_FILE_NUMBER = 5
+LOG_PATH = (BASE_DIR / 'logs')
+LOG_PATH.mkdir(exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_PATH / 'bot.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+# LOG_FORMAT = '"%(asctime)s - [%(levelname)s] - %(message)s"'
+# LOG_DATE_FORMAT = '%d.%m.%Y %H:%M:%S'
+# MAX_LOG_FILE_BYTES = 10 ** 6
+# MAX_LOG_FILE_NUMBER = 5
