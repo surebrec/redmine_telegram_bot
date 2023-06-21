@@ -7,6 +7,11 @@ from redmine.models import RedmineGroup
 logger = logging.getLogger(__name__)
 
 
+class ActiveManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
+
 class Chat(models.Model):
     name = models.CharField(max_length=150, default='Default Chat')
     chat_id = models.IntegerField(unique=True)
@@ -18,6 +23,21 @@ class Chat(models.Model):
     tasks = models.ManyToManyField(PeriodicTask,
                                    related_name='tasks',
                                    through='ChatTask', blank=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
+    published = ActiveManager()
+
+    class Meta:
+        verbose_name = 'Чат Telegram'
+        verbose_name_plural = 'Чаты Telegram'
+        ordering = ['-created']
+        indexes = [
+            models.Index(fields=['-created'])
+        ]
+
+    def __str__(self):
+        return self.name
 
 
 class ChatRedmineGroup(models.Model):

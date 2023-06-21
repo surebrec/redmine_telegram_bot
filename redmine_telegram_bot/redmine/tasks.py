@@ -3,7 +3,7 @@ from datetime import date, timedelta
 from celery import group
 from aiohttp import ClientConnectorError
 from rest_framework import serializers
-from telegram.error import NetworkError, TimedOut
+from telegram.error import NetworkError, TimedOut, RetryAfter
 
 from redmine_telegram_bot.celery import app
 
@@ -16,9 +16,9 @@ from .client import RedmineAPIClient
 logger = logging.getLogger(__name__)
 
 
-@app.task(autoretry_for=(NetworkError, TimedOut),
+@app.task(autoretry_for=(NetworkError, TimedOut, RetryAfter),
           retry_kwargs={'max_retries': 50},
-          default_retry_delay=1)
+          default_retry_delay=20)
 def send_message(message, chat_id):
     telegram_bot.send_message(chat_id=chat_id,
                               text=message,
@@ -124,14 +124,14 @@ def send_time_entries(self, chat_id=None, from_delta=0, to_delta=0):
         task_name = self.request.properties.get('periodic_task_name')
         groups = RedmineGroup.objects.filter(
             groups_chats__tasks__name=task_name).prefetch_related(
-            'groups_chats').prefetch_related('users')
+            'groups_chats').prefetch_related('users').distinct()
     if groups:
         for group in groups:
             users = list(group.users.all().values())
             if chat_id:
                 chats_ids = [chat_id]
             else:
-                chats = group.groups_chats.all().filter(
+                chats = group.groups_chats.filter(
                     is_active=True,
                     tasks__name=task_name)
                 chats_ids = list(chats.values_list('chat_id', flat=True))

@@ -23,8 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY',
-                       'django-insecure-+@65i((-5+fy@&1!2d!9qp+s!$ic+^)g@hr63x5e_-j!9%m)jr')
+SECRET_KEY = os.getenv('SECRET_KEY', 'invalid_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", default=False) == "True"
@@ -95,16 +94,6 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST', default='db'),
         'PORT': os.getenv('DB_PORT', default=5432),
     }
-    #
-    # "default": {
-    #     "ENGINE": os.environ.get("SQL_ENGINE",
-    #                              "django.db.backends.sqlite3"),
-    #     "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-    #     "USER": os.environ.get("SQL_USER", "user"),
-    #     "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-    #     "HOST": os.environ.get("SQL_HOST", "localhost"),
-    #     "PORT": os.environ.get("SQL_PORT", "5432"),
-    # }
 }
 
 # Password validation
@@ -128,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
