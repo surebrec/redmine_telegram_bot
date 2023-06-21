@@ -190,3 +190,8 @@ DEBUG_TOOLBAR_CONFIG = {
 
 CACHE_TIME = 60
 CACHE_NAME = '~/.cache/aiohttp-requests.db'
+
+LOG_FORMAT = '"%(asctime)s - [%(levelname)s] - %(message)s"'
+LOG_DATE_FORMAT = '%d.%m.%Y %H:%M:%S'
+MAX_LOG_FILE_BYTES = 10 ** 6
+MAX_LOG_FILE_NUMBER = 5
