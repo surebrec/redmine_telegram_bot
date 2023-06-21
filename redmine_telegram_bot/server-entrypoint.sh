@@ -23,4 +23,4 @@ python manage.py initadmin
 
 # Start server
 echo "Starting server ..."
-gunicorn redmine_telegram_bot.wsgi:application --bind 0.0.0.0:8000 & python manage.py runpolling
+gunicorn redmine_telegram_bot.wsgi:application --bind 0.0.0.0:8000  #python manage.py runpolling
