@@ -15,10 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_chat_name(update: Update):
-    if update.effective_chat.type == 'private':
-        return (f'{update.effective_chat.first_name} '
-                f'{update.effective_chat.last_name}')
-    return update.effective_chat.title
+    effective_chat = update.effective_chat
+    router = {
+        'private': lambda chat: f'{chat.first_name} {chat.last_name}',
+        'group': lambda chat: chat.title,
+        'default': lambda chat: f'default chat ({chat.chat_id})',
+    }
+    return router.get(effective_chat.type, 'default')(effective_chat)
 
 
 def command_start(update: Update, context: CallbackContext) -> None:
