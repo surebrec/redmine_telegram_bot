@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'telegram_bot.apps.TelegramBotConfig',
     'redmine.apps.RedmineConfig',
-
 ]
 
 MIDDLEWARE = [
@@ -154,8 +153,7 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ['https://redminebot.ddns.net',
-                        'https://127.0.0.1',
+CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1',
                         'https://server']
 
 # -----> REDMINE
@@ -210,8 +208,3 @@ LOGGING = {
         },
     },
 }
-
-# LOG_FORMAT = '"%(asctime)s - [%(levelname)s] - %(message)s"'
-# LOG_DATE_FORMAT = '%d.%m.%Y %H:%M:%S'
-# MAX_LOG_FILE_BYTES = 10 ** 6
-# MAX_LOG_FILE_NUMBER = 5
