@@ -1,1 +1,1 @@
-# redmine_telegram_bot
+# Redmine telegram bot
