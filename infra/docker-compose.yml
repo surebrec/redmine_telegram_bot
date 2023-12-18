@@ -5,8 +5,6 @@ services:
     image: postgres:13.0-alpine
     volumes:
       - postgres_db:/var/lib/postgresql/data/
-    env_file:
-      - ./.env
 
   redis:
     image: redis:alpine
@@ -21,8 +19,6 @@ services:
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
-    env_file:
-      - ./.env
     depends_on:
       - db
       - redis
@@ -47,12 +43,10 @@ services:
     restart: always
     volumes:
       - .:/app/celery
-    env_file:
-      - ./.env
+
     depends_on:
       - redis
       - server
-
   celery-beat:
     build:
       context: ../redmine_telegram_bot/.
@@ -61,8 +55,6 @@ services:
     restart: always
     volumes:
       - .:/app/celery_beat
-    env_file:
-      - ./.env
     depends_on:
       - redis
       - server
